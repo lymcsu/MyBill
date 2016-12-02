@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+		<title></title>
+		<link rel="stylesheet" href="css/reset.css" />
+		<link rel="stylesheet" href="css/mybill.css" />
+	</head>
+
+	<body>
+		<div id="app">
+			<header class="header">
+				<h1 class="header-title">MyBill</h1>
+				<a class="bill-review-btn" :class="{'active':isDayShow}" v-on:click="showDayReview()">日</a>
+				<a class="bill-review-btn month-review" :class="{'active':isMonthShow}" v-on:click="showMonthReview()">月</a>
+				<a class="bill-clear" v-on:click="clearAll()">清空记录</a>
+			</header>
+			<div class="mybill">
+				<p class="mybill-input">
+					<input v-model="billname" placeholder="账目" />
+				</p>
+				<p class="mybill-input">
+					<input v-model="billsum" placeholder="金额" />
+				</p>
+				<input id="J_add" type="button" v-on:click="addItem()" value="添加" />
+			</div>
+			<div class="bill-view">
+				<div>
+					<p class="bill-sum">{{daySumCost}}</p>
+					<span class="bill-time">今天</span>
+				</div>
+				<div>
+					<p class="bill-sum">{{monthSumCost}}</p>
+					<span class="bill-time">本月</span>
+				</div>
+			</div>
+			<ul class="bill-list">
+				<li v-for="item in items">
+					<span class="item-name">{{item.name}}</span>
+					<span class="item-cost">{{item.cost}}</span>
+					<span class="item-time">{{item.time}}</span>
+				</li>
+			</ul>
+			<div class="foot" id="account">
+				<a class="clear-day" v-on:click="dayAccount()">
+					今日结算
+				</a>
+				<a class="clear-month" v-on:click="monthAccount()">
+					本月结算
+				</a>
+			</div>
+			<div class="bill-review" v-if="isDayShow">
+				<h2 class="bill-review-title">日支出历史</h2>
+				<ul>
+					<li class="bill-review-list">
+						<span class="bill-review-time-title">Date</span><span class="bill-review-cost-title">cost</span>
+					</li>
+					<li class="bill-review-list" v-for="day in dayCostReview">
+						<span class="bill-review-time">{{day.time}}</span><span class="bill-review-cost">¥ {{day.cost}}</span>
+					</li>
+				</ul>
+			</div>
+			<div class="bill-review" v-if="isMonthShow">
+				<h2 class="bill-review-title">月支出历史</h2>
+				<ul>
+					<li class="bill-review-list">
+						<span class="bill-review-time-title">Month</span><span class="bill-review-cost-title">cost</span>
+					</li>
+					<li class="bill-review-list" v-for="month in monthCostReview">
+						<span class="bill-review-time">{{month.time}}</span><span class="bill-review-cost">¥ {{month.cost}}</span>
+					</li>
+				</ul>
+			</div>
+		</div>
+
+		<script type="text/javascript" src="js/vue.js"></script>
+		<script>
+			var app = new Vue({
+				el: "#app",
+				data: {
+					billname: "",
+					billsum: "",
+					isDayShow: false,
+					isMonthShow: false,
+					items: JSON.parse(localStorage.getItem("ITEMS")) ? JSON.parse(localStorage.getItem("ITEMS")) : [],
+					daySumCost: Number(localStorage.getItem("daySumCost")) ? Number(localStorage.getItem("daySumCost")) : 0,
+					monthSumCost: Number(localStorage.getItem("monthSumCost")) ? Number(localStorage.getItem("monthSumCost")) : 0,
+					dayCostReview: JSON.parse(localStorage.getItem("DAYS")) ? JSON.parse(localStorage.getItem("DAYS")) : [],
+					monthCostReview: JSON.parse(localStorage.getItem("MONTHS")) ? JSON.parse(localStorage.getItem("MONTHS")) : [],
+				},
+				methods: {
+					addItem: function() {
+						if(!this.billname || !this.billsum || !/^[\d]+(\.[\d]{1,2})?$/.test(this.billsum)) {
+							alert("输入错误！");
+							return false;
+						}
+						var date = new Date();
+						var Y = date.getFullYear() + '-';
+						var M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-';
+						var D = date.getDate() < 10 ? '0' + date.getDate() + ' ' : date.getDate() + ' ';
+						var h = date.getHours() < 10 ? '0' + date.getHours() + ':' : date.getHours() + ':';
+						var m = date.getMinutes() < 10 ? '0' + date.getMinutes() + ':' : date.getMinutes() + ':';
+						var s = date.getSeconds() < 10 ? '0' + date.getSeconds() : date.getSeconds();
+						var time = Y + M + D + h + m + s;
+						this.items.push({
+							name: this.billname,
+							cost: this.billsum,
+							time: time
+						});
+						localStorage.setItem("ITEMS", JSON.stringify(this.items));
+						this.billname = '';
+						this.billsum = ''
+					},
+					dayAccount: function() {
+						if(this.items.length === 0){
+							alert("尚未添加账目!");
+						}
+						var nowDate = this.items[this.items.length - 1].time.split(" ")[0];
+						if(this.dayCostReview.length !== 0) {
+							var lastDate = this.dayCostReview[this.dayCostReview.length - 1].time;		
+							if(lastDate !== nowDate) {
+								this.dayCostReview.push({
+									time: nowDate,
+									cost: this.daySumCost
+								});
+								localStorage.setItem("DAYS", JSON.stringify(this.dayCostReview));
+								localStorage.setItem("daySumCost", 0);
+								this.daySumCost = 0;
+							} else {
+								alert("今日已结算,请明天再操作!");
+							}
+						} else {
+							this.dayCostReview.push({
+								time: nowDate,
+								cost: this.daySumCost
+							});
+							localStorage.setItem("DAYS", JSON.stringify(this.dayCostReview));
+							localStorage.setItem("daySumCost", 0);
+							this.daySumCost = 0;
+						}
+					},
+					monthAccount: function() {
+						var date = new Date().getDate();
+						if(date < 28){
+							alert("未到月末，请月末再操作!");
+							return ;
+						};
+						var nowMonth = this.items[this.items.length - 1].time.split(" ")[0].substr(0, 7);
+						if(this.monthCostReview.length !== 0) {
+							var lastMonth = this.monthCostReview[this.monthCostReview.length - 1].time;
+							if(lastMonth !== nowMonth) {
+								this.monthCostReview.push({
+									time: nowMonth,
+									cost: this.monthSumCost
+								});
+								localStorage.setItem("MONTHS", JSON.stringify(this.monthCostReview));
+								localStorage.setItem("monthSumCost", 0);
+								this.monthSumCost = 0;
+							} else {
+								alert("本月已结算,请下月再操作!");
+							}
+						} else {
+							this.monthCostReview.push({
+								time: nowMonth,
+								cost: this.monthSumCost
+							});
+							localStorage.setItem("MONTHS", JSON.stringify(this.monthCostReview));
+							localStorage.setItem("monthSumCost", 0);
+							this.monthSumCost = 0;
+						}
+					},
+					showDayReview: function() {
+						this.isDayShow = !this.isDayShow;
+					},
+					showMonthReview: function() {
+						this.isMonthShow = !this.isMonthShow;
+					},
+					clearAll: function (){
+						localStorage.clear();
+						this.items = [];
+						this.daySumCost = 0;
+						this.monthSumCost = 0;
+						this.dayCostReview = [];
+						this.monthCostReview = [];
+					}
+				},
+				watch: {
+					'items': function(val) {
+						if(val.length === 0){
+							return ;
+						}
+						this.daySumCost += Number(val[val.length - 1].cost);
+						this.monthSumCost += Number(val[val.length - 1].cost);
+						localStorage.setItem("daySumCost", this.daySumCost);
+						localStorage.setItem("monthSumCost", this.monthSumCost);
+					}
+				}
+			});
+		</script>
+	</body>
+
+</html>

@@ -1,0 +1,207 @@
+body{
+	padding-top: 45px;
+}
+a{
+	outline: none;
+	-webkit-tap-highlight-color: transparent;
+	transition: all .5s;
+}
+.header{
+	width: 100%;
+	height: 45px;
+	line-height: 45px;
+	background: rgba(0,0,0,.8);
+	text-align: center;
+	color: #f5f5f5;
+	position: fixed;
+	top: 0;
+	left: 0;
+}
+.header-title{
+	font-size: 18px;
+}
+.mybill{
+	padding: 2px;
+	background: rgba(0,0,0,.8);
+	color: #fff;
+	height: 170px;
+}
+.mybill-input{
+	width: 50%;
+	margin: 10px auto 20px;
+	line-height: 30px;
+}
+.mybill-input input{
+	color: #333;
+	border: none;
+	background: #f8f8f8;
+	height: 30px;
+	padding: 4px;
+	border-radius: 4px;
+	width: 100%;
+}
+#J_add{
+	width: 50%;
+	display: block;
+	margin: 0 auto;
+	border: none;
+	height: 30px;
+	background: rgb(200,22,29);
+	color: #fff;
+	border-radius: 4px;
+}
+.bill-list{
+	position: fixed;
+	bottom: 50px;
+	top: 275px;
+	overflow: auto;
+	width: 100%;
+}
+.bill-view{
+	height: 60px;
+	background: #e1e1e1;
+}
+.bill-view div{
+	width: 50%;
+	float: left;
+	text-align: center;
+	height: 60px;
+	border-bottom: 1px solid #ccc;
+}
+.bill-sum{
+	font-size: 24px;
+	font-weight: bold;
+	margin-top: 4px;
+}
+.bill-time{
+	font-size: 12px;
+	color: #666;
+}
+.bill-list li{
+	height: 40px;
+	line-height: 40px;
+	border-bottom: 1px solid #e1e6eb;
+	text-align: center;
+}
+.bill-list li span{
+	float: left;
+	text-align: center;
+}
+.item-name{
+	color: #333;
+	font-size: 14px;
+	width: 30%;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+.item-cost{
+	color: #666;
+	font-size: 20px;
+	width: 30%;
+	font-weight: bold;
+}
+.item-time{
+	color: #999;
+	font-size: 12px;
+	text-align: right;
+	width: 40%;
+}
+.foot{
+	width: 100%;
+	height: 50px;
+	line-height: 50px;
+	position: fixed;
+	bottom: 0;
+	left: 0;
+}
+.foot a{
+	height: 50px;
+	width: 50%;
+	float: left;
+	text-align: center;
+	background: #444;
+	color: #f3f3f3;
+}
+.clear-day{
+	border-right: 1px solid #aaa;
+}
+.bill-review{
+	width: 80%;
+	height: 400px;
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	margin-left: -40%;
+	margin-top: -200px;
+	background: rgba(255,255,255,0.9);
+	overflow: auto;
+	box-shadow: 0 1px 1px 1px #ccc;
+}
+.bill-review ul{
+	padding: 0 15px;
+}
+.bill-review-show{
+	display: block;
+}
+.bill-review-list{
+	height: 40px;
+	line-height: 40px;
+	border-bottom: 1px solid #ccc;
+	color: #666;
+	overflow: hidden;
+}
+.bill-review-time-title{
+	float: left;
+	color: #333;
+	font-size: 18px;
+}
+.bill-review-time{
+	float: left;
+	color: #666;
+	font-size: 14px;
+}
+.bill-review-cost-title{
+	float: right;
+	color: #333;
+	font-size: 18px;
+}
+.bill-review-cost{
+	float: right;
+	color: rgb(200,22,29);
+}
+.bill-review-btn{
+	width: 40px;
+	height: 25px;
+	line-height: 26px;
+	position: absolute;
+	left: 5px;
+	top: 10px;
+	background: #333;
+	box-shadow: 0px 0px 1px 1px #eee;
+}
+.month-review{
+	left: 55px;
+}
+.bill-review-btn.active{
+	background: #f3f3f3;
+	color: #333;
+	box-shadow: 0px 0px 1px 1px #aaa;
+}
+.bill-clear{
+	padding: 0 4px;
+	height: 25px;
+	line-height: 26px;
+	position: absolute;
+	right: 5px;
+	top: 10px;
+	background: #333;
+	box-shadow: 0px 0px 1px 1px #eee;
+}
+.bill-review-title{
+	background: rgba(0,0,0,0.8);
+	height: 40px;
+	line-height: 40px;
+	color: #fff;
+	text-align: center;
+}

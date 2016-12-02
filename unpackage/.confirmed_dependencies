@@ -1,0 +1,10 @@
+{
+  "index.html": {
+    "resources": [
+      "js/vue.js",
+      "css/mybill.css",
+      "css/reset.css"
+    ],
+    "refer": []
+  }
+}
